@@ -20,6 +20,24 @@ img {
   background-color: #F9FBFA;
 }
 
+.banner {
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px solid #f0f1f0;
+  font-family: "proxima-nova";
+}
+
 .login-button {
   color: #4eab79;
+  border: 1px solid #4eab79;
+  background-color: rgba(78,171,121,0.2);
+}
+
+.log-in-container, .sign-in-container {
+   margin-top: 20px;
+}
+
+.instructions {
+  font-family: "proxima-nova";
+  font-style: italic;
 }
