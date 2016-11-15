@@ -5,24 +5,27 @@ var Tooltip = require('react-bootstrap').Tooltip;
 var React = require('react');
 
 //local imports
-var ArkiverCollections = require('../models/collection').ArkiverCollections;
-
+var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
+var MomentCollection = require('../models/scrapbook').MomentCollection;
 //components
 
 var ThumbnailComponent = React.createClass({
+  viewMoments: function(){
+    this.props.viewMoments(this.props.scrapbook.id);
+  },
   render: function(){
     return(
-      <div className="thumbnail">
-        <img src={this.props.image} />
-        <p>{this.props.title}</p>
+      <div className="thumbnail" onClick={this.viewMoments}>
+        <img src={this.props.scrapbook.cover} />
+        <p>{this.props.scrapbook.title}</p>
       </div>
     )
   }
 });
 
-var ModalContainer = React.createClass({
+var ModalComponent = React.createClass({
   getInitialState: function() {
-      return { showModal: false };
+      return {showModal: false};
     },
     close: function() {
       this.setState({ showModal: false });
@@ -34,6 +37,7 @@ var ModalContainer = React.createClass({
 
     render: function() {
       console.log("collection passed as ", this.props.collection);
+      var self = this
       const popover = (
         <Popover id="modal-popover" title="popover">
           very popover. such engagement
@@ -45,11 +49,12 @@ var ModalContainer = React.createClass({
         </Tooltip>
       );
 
-      // var collectionThumbnails = this.props.collection.models.map(function(collection){
-      //   return (
-      //     <ThumbnailComponent image={collection.cover} title={collection.title}/>
-      //   )
-      // });
+      var self = this;
+      var collectionThumbnails = this.props.collection.models.map(function(collection){
+        return (
+          <ThumbnailComponent scrapbook={collection} viewMoments={self.props.viewMoments}/>
+        )
+      });
       return (
         <div>
           <p>Click to get your Arkver photos!</p>
@@ -64,21 +69,17 @@ var ModalContainer = React.createClass({
 
           <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Arkiver Collections</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <h4>Text in a modal</h4>
-              <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
 
-              <h4>Popover in a modal</h4>
+              {collectionThumbnails}
 
-              <hr />
 
-              <h4>Overflowing text to show scroll behavior</h4>
-              <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={this.close}>Close</Button>
+              <Button onClick={function(){self.props.collection.getNextSet()}}>Next</Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -87,8 +88,11 @@ var ModalContainer = React.createClass({
 });
 
 var TimelineContainer = React.createClass({
+  getInitialState: function(){
+    return {collection: new ScrapbookCollection()};
+  },
   componentDidMount: function(){
-    var collection = new ArkiverCollections();
+    var collection = this.state.collection;
 
     collection.fetch({
       beforeSend: function(xhr){
@@ -97,18 +101,23 @@ var TimelineContainer = React.createClass({
       },
       success: function(resp){
         console.log('collection fetched, resp is ', resp);
-        collection.url = collection.models[0].get("links").next;
+        collection.url = "https://arkiver-beta.herokuapp.com"+collection.models[0].get("links").next;
         collection.models = collection.models[0].get("collections");
 
-        // collection.url = resp.links.next;
-        // collection.models = resp.collections;
-        this.setState({collection: collection});
       }
     });
   },
+  viewMoments: function(scrapbookId){
+    console.log(scrapbookId);
+    var moments = new MomentCollection();
+    moments.scrapbookId = scrapbookId;
+    var fetchedMoments = moments.fetch();
+    console.log(fetchedMoments);
+
+  },
   render: function(){
     return(
-      <ModalContainer collection={this.state.collection}  />
+      <ModalComponent collection={this.state.collection} viewMoments={this.viewMoments} />
     )
   }
 });
