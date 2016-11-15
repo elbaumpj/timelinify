@@ -7,7 +7,7 @@ var $ = require('jquery');
 //user model w/help from Jake
 
 var User = Backbone.Model.extend({
-  urlRoot: 'https://arkiver.com/api/me',
+  urlRoot: 'https://arkiver-beta.herokuapp.com/api/me',
   login: function(email, password, callbacks){
     var payload = {
       "user": {
@@ -15,11 +15,13 @@ var User = Backbone.Model.extend({
         "password": password
       }
     };
-    $.post("https://arkiver.com/login", JSON.stringify(payload), function(resp){
-
+    // $.post("https://arkiver-beta.herokuapp.com/login", JSON.stringify(payload), function(resp){
+    $.post("https://arkiver-beta.herokuapp.com/login", JSON.stringify(payload), function(resp){
+      console.log("response from login:", resp);
       localStorage["logged_in"] = true;
       localStorage["user_token"] = resp.authentication_token;
       localStorage["user_email"] = email;
+
 
     }).success(function() {
       callbacks.success();

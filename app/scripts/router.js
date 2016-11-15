@@ -7,7 +7,7 @@ var ReactDOM = require('react-dom');
 //local imports
 var LoginContainer = require('./components/login.jsx').LoginContainer;
 var SignUpContainer = require('./components/signup.jsx').SignUpContainer;
-var ModalContainer = require('./components/timeline.jsx').ModalContainer;
+var TimelineContainer = require('./components/timeline.jsx').TimelineContainer;
 
 //see if user is logged in. if not, will use this to redirect to login screen
 
@@ -22,13 +22,19 @@ function userIsLoggedIn(){
 //router
 
 var AppRouter = Backbone.Router.extend({
-  initialize: function() {
-    console.log("BAAAAAAAA");
-  },
   routes: {
     '': 'index',
     'signup/': 'signup',
     'timeline/': 'timeline'
+  },
+  initialize: function(){
+    $.ajaxSetup({
+      headers : {
+        "Accept": "application/json,version=2",
+        "Content-Type": "application/json",
+        "Authorization": "Token token=cb312c5dfea2869df465be179f391292"
+      }
+    });
   },
   execute: function(routeMethod, args){
     $(window).scrollTop(0,0);
@@ -45,7 +51,7 @@ var AppRouter = Backbone.Router.extend({
         }
 
         if(options.url.split("?").length > 1) {
-          options.url = options.url + "user_email=" + authData.user_email + "&user_token=" + authData.user_token;
+          options.url = options.url + "&user_email=" + authData.user_email + "&user_token=" + authData.user_token;
         } else {
           options.url = options.url + "?user_email=" + authData.user_email + "&user_token=" + authData.user_token;
         }
@@ -58,14 +64,12 @@ var AppRouter = Backbone.Router.extend({
     routeMethod.apply(this, args);
   },
   index: function(){
-    console.log("CHHHHHHA");
     ReactDOM.render(
       React.createElement(LoginContainer, {router: this}),
       document.getElementById('app')
     );
   },
   signup: function(){
-    console.log("DHHHHHHA");
     ReactDOM.render(
       React.createElement(SignUpContainer, {router: this}),
       document.getElementById('app')
@@ -73,7 +77,7 @@ var AppRouter = Backbone.Router.extend({
   },
   timeline: function(){
     ReactDOM.render(
-      React.createElement(ModalContainer),
+      React.createElement(TimelineContainer),
       document.getElementById('app')
     );
   }

@@ -3,6 +3,7 @@ var Backbone = require('backbone');
 require('./router');
 
 $(function(){
+  Backbone.emulateHTTP = true;
+
   Backbone.history.start();
-  console.log("AHHHHHH");
 });
