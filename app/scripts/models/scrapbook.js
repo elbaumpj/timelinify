@@ -33,7 +33,25 @@ var Moment = Backbone.Model.extend({
 var MomentCollection = Backbone.Collection.extend({
   model: Moment,
   url: function(){
-    return 'https://arkiver-beta.herokuapp.com/api/collections/' + this.scrapbookId + '/moments';
+    return 'https://arkiver-beta.herokuapp.com/api/collections/' + this.scrapbookId + '?paginate=true&count=20&page=1';
+  },
+  parse: function(data){
+    return data.moments;
+
+  },
+  getNextSet: function() {
+    var self = this;
+    $.ajax({
+      url: this.url,
+      beforeSend: function(xhr){
+        xhr.setRequestHeader("Accept", "*/*,version=2");
+        xhr.setRequestHeader('Authorization', 'Token token=a9e757198b0339c5441cea4cbe8cd51a');
+      },
+      success: function(resp){
+        self.add(resp.collections);
+        self.url = "https://arkiver-beta.herokuapp.com"+resp.links.next;
+      }
+    });
   }
 });
 
@@ -44,4 +62,4 @@ module.exports = {
   ScrapbookCollection: ScrapbookCollection,
   Moment: Moment,
   MomentCollection: MomentCollection
-}
+};

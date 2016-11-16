@@ -9,7 +9,20 @@ var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
 var MomentCollection = require('../models/scrapbook').MomentCollection;
 //components
 
-var ThumbnailComponent = React.createClass({
+
+var MomentThumbnailComponent = React.createClass({
+  render: function(){
+    return(
+      <div className="thumbnail">
+        <img src={this.props.moment.attributes.thumbnail_url} />
+      </div>
+    )
+  }
+});
+
+
+
+var ScrapbookThumbnailComponent = React.createClass({
   viewMoments: function(){
     this.props.viewMoments(this.props.scrapbook.id);
   },
@@ -50,22 +63,25 @@ var ModalComponent = React.createClass({
       );
 
       var self = this;
-      var collectionThumbnails = this.props.collection.models.map(function(collection){
-        return (
-          <ThumbnailComponent scrapbook={collection} viewMoments={self.props.viewMoments}/>
-        )
+      var pictureThumbnails;
+      if(this.props.displayType == 'scrapbook'){
+        var pictureThumbnails = this.props.collection.models.map(function(collection){
+          return (
+            <ScrapbookThumbnailComponent scrapbook={collection} viewMoments={self.props.viewMoments}/>
+          )
+        });
+      } else {
+        var pictureThumbnails = this.props.collection.models.map(function(moment){
+          return (
+            <MomentThumbnailComponent moment={moment} />
+            )
       });
+    }
       return (
         <div>
-          <p>Click to get your Arkver photos!</p>
+          <i className="add-button fa fa-plus-circle" aria-hidden="true" onClick={this.open}></i>
 
-          <Button
-            bsStyle="primary"
-            bsSize="large"
-            onClick={this.open}
-          >
-            Get your photos
-          </Button>
+
 
           <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>
@@ -73,7 +89,7 @@ var ModalComponent = React.createClass({
             </Modal.Header>
             <Modal.Body>
 
-              {collectionThumbnails}
+              {pictureThumbnails}
 
 
             </Modal.Body>
@@ -97,32 +113,28 @@ var TimelineContainer = React.createClass({
   componentDidMount: function(){
     var collection = this.state.collection;
 
-    collection.fetch({
-      beforeSend: function(xhr){
-        xhr.setRequestHeader("Accept", "*/*,version=2");
-        xhr.setRequestHeader('Authorization', 'Token token=a9e757198b0339c5441cea4cbe8cd51a');
-      },
-      success: function(resp){
+    collection.fetch().then(function(resp){
         console.log('collection fetched, resp is ', resp);
         collection.url = "https://arkiver-beta.herokuapp.com"+collection.models[0].get("links").next;
         collection.models = collection.models[0].get("collections");
 
-      }
-    });
+      });
   },
   viewMoments: function(scrapbookId){
     console.log(scrapbookId);
     var moments = new MomentCollection();
     moments.scrapbookId = scrapbookId;
-    var fetchedMoments = moments.fetch();
-    console.log(fetchedMoments);
-    this.setState({displayType: 'moment'})
+    var self = this;
+    moments.fetch().then(function(){
+      console.log(moments);
+      self.setState({displayType: 'moment', collection: moments});
+    });
   },
   render: function(){
-    return(
-      <ModalComponent collection={this.state.collection} viewMoments={this.viewMoments} />
-    )
-  }
+      return(
+        <ModalComponent displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
+      )
+    }
 });
 
 

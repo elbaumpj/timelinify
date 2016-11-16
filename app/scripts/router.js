@@ -29,10 +29,10 @@ var AppRouter = Backbone.Router.extend({
   },
   initialize: function(){
     $.ajaxSetup({
-      headers : {
+      headers: {
         "Accept": "application/json,version=2",
         "Content-Type": "application/json",
-        "Authorization": "Token token=cb312c5dfea2869df465be179f391292"
+        'Authorization': 'Token token=a9e757198b0339c5441cea4cbe8cd51a'
       }
     });
   },
