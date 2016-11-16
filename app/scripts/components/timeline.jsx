@@ -89,7 +89,10 @@ var ModalComponent = React.createClass({
 
 var TimelineContainer = React.createClass({
   getInitialState: function(){
-    return {collection: new ScrapbookCollection()};
+    return {
+      collection: new ScrapbookCollection(),
+      displayType: 'scrapbook'
+    };
   },
   componentDidMount: function(){
     var collection = this.state.collection;
@@ -113,7 +116,7 @@ var TimelineContainer = React.createClass({
     moments.scrapbookId = scrapbookId;
     var fetchedMoments = moments.fetch();
     console.log(fetchedMoments);
-
+    this.setState({displayType: 'moment'})
   },
   render: function(){
     return(
