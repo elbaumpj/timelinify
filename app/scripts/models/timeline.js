@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 
 var Timeline = Backbone.Model.extend({
-
+  urlRoot: 'https://arkiver-beta.herokuapp.com/api/timelines'
 });
 
 var TimelineCollection = Backbone.Collection.extend({
