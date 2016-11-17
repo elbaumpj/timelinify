@@ -8,7 +8,7 @@ var ReactDOM = require('react-dom');
 var LoginContainer = require('./components/login.jsx').LoginContainer;
 var SignUpContainer = require('./components/signup.jsx').SignUpContainer;
 var TimelineContainer = require('./components/timeline.jsx').TimelineContainer;
-var TimelineViewContainer = require('./components/timelinesview.jsx').TimelineViewContainer;
+var TimelineListViewContainer = require('./components/timelinesview.jsx').TimelineListViewContainer;
 //see if user is logged in. if not, will use this to redirect to login screen
 
 function userIsLoggedIn(){
@@ -25,7 +25,7 @@ var AppRouter = Backbone.Router.extend({
   routes: {
     '': 'index',
     'signup/': 'signup',
-    'timeline/': 'timeline',
+    'timeline/:id/': 'timeline',
     'timelines/': 'timelinesview'
   },
   initialize: function(){
@@ -78,13 +78,13 @@ var AppRouter = Backbone.Router.extend({
   },
   timeline: function(){
     ReactDOM.render(
-      React.createElement(TimelineContainer),
+      React.createElement(TimelineContainer, {timelineId: timelineId}),
       document.getElementById('app')
     );
   },
   timelinesview: function(){
     ReactDOM.render(
-      React.createElement(TimelineViewContainer),
+      React.createElement(TimelineListViewContainer),
       document.getElementById('app')
     );
   }

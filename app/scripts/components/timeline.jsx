@@ -126,7 +126,6 @@ var TimelineContainer = React.createClass({
     moments.scrapbookId = scrapbookId;
     var self = this;
     moments.fetch().then(function(){
-      console.log(moments);
       self.setState({displayType: 'moment', collection: moments});
     });
   },

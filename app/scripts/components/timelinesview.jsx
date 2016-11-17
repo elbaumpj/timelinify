@@ -6,17 +6,20 @@ var models = require('../models/timeline');
 
 
 
-var TimelineViewContainer = React.createClass({
-  getInitialState: function(){
-    return{
-      timeline: new models.Timeline()
-    };
-  },
+var TimelineListViewContainer = React.createClass({
   createTimeline: function(){
-    console.log(this.state.timeline);
     var newTimeLine = new models.Timeline()
-    newTimeLine.save();
-
+    newTimeLine.set("title", "cool dude")
+    newTimeLine.save({title: "cool timeline"},{
+      success: function(resp) {
+        console.log("hooray", resp);
+      },
+      error: function(err, resp) {
+        console.log("something aint right:", err);
+      }
+    }).then(function(){
+      Backbone.history.navigate('timeline/' + newTimeLine.get('id') + '/', {trigger: true});
+    });
   },
   render: function(){
     return(
@@ -30,5 +33,5 @@ var TimelineViewContainer = React.createClass({
 
 
 module.exports = {
-  TimelineViewContainer: TimelineViewContainer
+  TimelineListViewContainer: TimelineListViewContainer
 }
