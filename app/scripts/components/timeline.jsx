@@ -7,19 +7,51 @@ var React = require('react');
 //local imports
 var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
 var MomentCollection = require('../models/scrapbook').MomentCollection;
+var models = require('../models/timeline');
 //components
 
+var TimelineEventComponent = React.createClass({
+  render: function(){
+    var image;
+    if(this.props.event) {
+      image = this.props.event.map(function(pic){
+        return pic.attributes.imageSource;
+      });
+    }
+    console.log('in component',this.props.event);
+    return(
+      <li className="timeline-event">
+        <img src={image} />
+      </li>
+    )
+  }
+});
 
 var MomentThumbnailComponent = React.createClass({
+  createEvent: function(timelineId){
+    var event = new models.Event();
+    event.timelineId = timelineId;
+    event.set({
+      imageSource: this.props.moment.attributes.thumbnail_url,
+      description: "",
+      date: this.props.moment.attributes.given_date
+    })
+    event.save();
+    console.log(event);
+    this.props.postEvent(event);
+    return{
+      event: event
+    };
+  },
   render: function(){
+    var self = this;
     return(
-      <div className="thumbnail">
+      <div className="thumbnail" onClick={function(){self.createEvent(self.props.timelineId)}}>
         <img src={this.props.moment.attributes.thumbnail_url} />
       </div>
     )
   }
 });
-
 
 
 var ScrapbookThumbnailComponent = React.createClass({
@@ -73,15 +105,13 @@ var ModalComponent = React.createClass({
       } else {
         var pictureThumbnails = this.props.collection.models.map(function(moment){
           return (
-            <MomentThumbnailComponent moment={moment} />
+            <MomentThumbnailComponent postEvent={self.props.postEvent} timelineId={self.props.timelineId} moment={moment} />
             )
       });
     }
       return (
         <div>
           <i className="add-button fa fa-plus-circle" aria-hidden="true" onClick={this.open}></i>
-
-
 
           <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>
@@ -90,7 +120,6 @@ var ModalComponent = React.createClass({
             <Modal.Body>
 
               {pictureThumbnails}
-
 
             </Modal.Body>
             <Modal.Footer>
@@ -107,7 +136,8 @@ var TimelineContainer = React.createClass({
   getInitialState: function(){
     return {
       collection: new ScrapbookCollection(),
-      displayType: 'scrapbook'
+      displayType: 'scrapbook',
+      event: ''
     };
   },
   componentDidMount: function(){
@@ -117,7 +147,6 @@ var TimelineContainer = React.createClass({
         console.log('collection fetched, resp is ', resp);
         collection.url = "https://arkiver-beta.herokuapp.com"+collection.models[0].get("links").next;
         collection.models = collection.models[0].get("collections");
-
       });
   },
   viewMoments: function(scrapbookId){
@@ -129,9 +158,22 @@ var TimelineContainer = React.createClass({
       self.setState({displayType: 'moment', collection: moments});
     });
   },
+  postEvent: function(event){
+    var eventArray = [];
+    eventArray.push(event)
+    console.log('event passed to parent', event);
+    this.setState({event: eventArray});
+  },
   render: function(){
       return(
-        <ModalComponent displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
+        <div>
+          <div>
+            <ModalComponent postEvent={this.postEvent} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
+          </div>
+          <ul className="timeline">
+            <TimelineEventComponent event={this.state.event}/>
+          </ul>
+        </div>
       )
     }
 });

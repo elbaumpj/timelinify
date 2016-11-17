@@ -76,7 +76,7 @@ var AppRouter = Backbone.Router.extend({
       document.getElementById('app')
     );
   },
-  timeline: function(){
+  timeline: function(timelineId){
     ReactDOM.render(
       React.createElement(TimelineContainer, {timelineId: timelineId}),
       document.getElementById('app')

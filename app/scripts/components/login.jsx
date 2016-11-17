@@ -17,7 +17,7 @@ var SignInComponent = React.createClass({
     user.login(email, password, {
       success: function(user) {
         console.log("user in success callback",user);
-        router.navigate('timeline/', {trigger: true});
+        router.navigate('timelines/', {trigger: true});
       },
       error: function(user, error){
         console.log(user, error);
