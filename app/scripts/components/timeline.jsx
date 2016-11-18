@@ -24,7 +24,7 @@ var TimelineEvent = React.createClass({
 var TimelineEventComponent = React.createClass({
   generateItems: function(){
     return this.props.event.map(function(pic){
-      return <TimelineEvent image={pic.attributes.imageSource} description={pic.attributes.description}/>
+      return <TimelineEvent key={pic.cid} image={pic.attributes.imageSource} description={pic.attributes.description}/>
     });
   },
   render: function(){
@@ -44,14 +44,12 @@ var MomentThumbnailComponent = React.createClass({
     event.set({
       imageSource: this.props.moment.attributes.thumbnail_url,
       description: "",
-      date: this.props.moment.attributes.given_date
+      date: this.props.moment.attributes.given_date,
+      moment_id: this.props.moment.get('id')
     })
     event.save();
     console.log(event);
     this.props.postEvent(event);
-    return{
-      event: event
-    };
   },
   render: function(){
     var self = this;
@@ -91,7 +89,6 @@ var ModalComponent = React.createClass({
     },
 
     render: function() {
-      console.log("collection passed as ", this.props.collection);
       var self = this
       const popover = (
         <Popover id="modal-popover" title="popover">
@@ -109,13 +106,13 @@ var ModalComponent = React.createClass({
       if(this.props.displayType == 'scrapbook'){
         var pictureThumbnails = this.props.collection.models.map(function(collection){
           return (
-            <ScrapbookThumbnailComponent scrapbook={collection} viewMoments={self.props.viewMoments}/>
+            <ScrapbookThumbnailComponent key={collection.id} scrapbook={collection} viewMoments={self.props.viewMoments}/>
           )
         });
       } else {
         var pictureThumbnails = this.props.collection.models.map(function(moment){
           return (
-            <MomentThumbnailComponent postEvent={self.props.postEvent} timelineId={self.props.timelineId} moment={moment} />
+            <MomentThumbnailComponent key={moment.cid} postEvent={self.props.postEvent} timelineId={self.props.timelineId} moment={moment} />
             )
       });
     }
@@ -168,19 +165,26 @@ var TimelineContainer = React.createClass({
       self.setState({displayType: 'moment', collection: moments});
     });
   },
-
   postEvent: function(event){
-    // console.log('event', event);
     var eventArray = this.state.event;
-    console.log('eventArray', eventArray);
     eventArray.push(event)
-    // console.log('event passed to parent', event);
     this.setState({event: eventArray});
-    console.log('newState', this.setState);
+    console.log(this.state.event);
   },
+  // saveTimeline: function(){
+  //   var timeline = new models.Timeline();
+  //   var urlRoot = 'https://arkiver-beta.herokuapp.com/api/timelines';
+  //   timeline.urlRoot = urlRoot + '/' + this.props.timelineId;
+  //   console.log(timeline);
+  //   timeline.set({
+  //     events: this.state.event
+  //   })
+  //   timeline.save();
+  // },
   render: function(){
       return(
         <div>
+          <button type="button" className="btn" onClick={this.saveTimeline}>Update Timeline</button>
           <div>
             <ModalComponent postEvent={this.postEvent} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
           </div>
