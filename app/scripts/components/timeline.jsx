@@ -3,6 +3,7 @@ var Button = require('react-bootstrap').Button;
 var Popover = require('react-bootstrap').Popover;
 var Tooltip = require('react-bootstrap').Tooltip;
 var React = require('react');
+var $ = require('jquery');
 
 //local imports
 var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
@@ -10,19 +11,28 @@ var MomentCollection = require('../models/scrapbook').MomentCollection;
 var models = require('../models/timeline');
 //components
 
-var TimelineEventComponent = React.createClass({
+var TimelineEvent = React.createClass({
   render: function(){
-    var image;
-    if(this.props.event) {
-      image = this.props.event.map(function(pic){
-        return pic.attributes.imageSource;
-      });
-    }
-    console.log('in component',this.props.event);
     return(
-      <li className="timeline-event">
-        <img src={image} />
+      <li className="timeline-event well">
+        <img src={this.props.image} />
       </li>
+    )
+  }
+});
+
+var TimelineEventComponent = React.createClass({
+  generateItems: function(){
+    return this.props.event.map(function(pic){
+      return <TimelineEvent image={pic.attributes.imageSource} description={pic.attributes.description}/>
+    });
+  },
+  render: function(){
+      var pictures = this.generateItems();
+    return(
+      <ul className="timeline timeline-events-container">
+      {pictures}
+     </ul>
     )
   }
 });
@@ -137,7 +147,7 @@ var TimelineContainer = React.createClass({
     return {
       collection: new ScrapbookCollection(),
       displayType: 'scrapbook',
-      event: ''
+      event: []
     };
   },
   componentDidMount: function(){
@@ -158,11 +168,15 @@ var TimelineContainer = React.createClass({
       self.setState({displayType: 'moment', collection: moments});
     });
   },
+
   postEvent: function(event){
-    var eventArray = [];
+    // console.log('event', event);
+    var eventArray = this.state.event;
+    console.log('eventArray', eventArray);
     eventArray.push(event)
-    console.log('event passed to parent', event);
+    // console.log('event passed to parent', event);
     this.setState({event: eventArray});
+    console.log('newState', this.setState);
   },
   render: function(){
       return(
@@ -170,9 +184,7 @@ var TimelineContainer = React.createClass({
           <div>
             <ModalComponent postEvent={this.postEvent} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
           </div>
-          <ul className="timeline">
             <TimelineEventComponent event={this.state.event}/>
-          </ul>
         </div>
       )
     }

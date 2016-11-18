@@ -69,4 +69,39 @@ img {
 
 li {
   display: inline-block;
+  margin-left: 24%;
+}
+
+.timeline-events-container>li:nth-child(odd){
+  position: relative;
+  margin-left: 52%;
+}
+
+.timeline-event {
+  display: inline-block;
+}
+
+.timeline-events-container>li:nth-child(odd){
+	position: relative;
+	background: #F5F5F5;
+	border: 4px solid #F5F5F5;
+}
+
+/* for timeline event carrot */
+.timeline-events-container>li:nth-child(odd):after, .timeline-events-container>li:nth-child(odd):before {
+	right: 100%;
+	top: 25%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.timeline-events-container>li:nth-child(odd):after {
+	border-color: rgba(136, 183, 213, 0);
+	border-right-color: #F5F5F5;
+	border-width: 20px;
+	margin-top: -30px;
 }
