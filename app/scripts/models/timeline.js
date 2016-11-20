@@ -27,10 +27,14 @@ var EventCollection = Backbone.Collection.extend({
   }
 });
 
+var HistoricalData = Backbone.Model.extend({
+  urlRoot: 'http://history.muffinlabs.com/date'
+});
 
 module.exports = {
   Timeline: Timeline,
   TimelineCollection: TimelineCollection,
   Event: Event,
-  EventCollection: EventCollection
+  EventCollection: EventCollection,
+  HistoricalData: HistoricalData
 }

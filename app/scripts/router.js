@@ -51,7 +51,12 @@ var AppRouter = Backbone.Router.extend({
           user_token: localStorage["user_token"]
         }
 
-        if(options.url.split("?").length > 1) {
+        //to get around prefilter for 3rd party
+        if(options.url == 'http://history.muffinlabs.com/date') {
+          options.url == options.url;
+        }
+
+        else if(options.url.split("?").length > 1) {
           options.url = options.url + "&user_email=" + authData.user_email + "&user_token=" + authData.user_token;
         } else {
           options.url = options.url + "?user_email=" + authData.user_email + "&user_token=" + authData.user_token;

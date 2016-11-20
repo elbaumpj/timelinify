@@ -12,10 +12,16 @@ var models = require('../models/timeline');
 //components
 
 var TimelineEvent = React.createClass({
+  getHistoricalData: function(){
+    var historicalData = new models.HistoricalData();
+    historicalData.fetch();
+  },
   render: function(){
     return(
       <li className="timeline-event well">
         <img src={this.props.image} />
+        <br />
+        <button type="button" className="btn" onClick={this.getHistoricalData}>This Day in History</button>
       </li>
     )
   }
@@ -42,14 +48,24 @@ var MomentThumbnailComponent = React.createClass({
     var event = new models.Event();
     event.timelineId = timelineId;
     event.set({
-      imageSource: this.props.moment.attributes.thumbnail_url,
+      title: "test",
+      imageSource: this.props.moment.get('thumbnail_url'),
       description: "",
-      date: this.props.moment.attributes.given_date,
+      date: this.props.moment.get('given_date'),
       moment_id: this.props.moment.get('id')
     })
-    event.save();
+
+    var self = this;
+    event.save().then(function(){
+      console.log('fetch after save', self.props.eventCollection);
+    });
+
+
     console.log(event);
-    this.props.postEvent(event);
+    // var fetchedEvents = this.props.eventCollection.fetch();
+    // console.log(fetchedEvents);
+    // console.log('fetching all events for this timeline', this.props.eventCollection);
+    this.props.showEvent(event);
   },
   render: function(){
     var self = this;
@@ -112,7 +128,7 @@ var ModalComponent = React.createClass({
       } else {
         var pictureThumbnails = this.props.collection.models.map(function(moment){
           return (
-            <MomentThumbnailComponent key={moment.cid} postEvent={self.props.postEvent} timelineId={self.props.timelineId} moment={moment} />
+            <MomentThumbnailComponent eventCollection={self.props.eventCollection} key={moment.cid} showEvent={self.props.showEvent} timelineId={self.props.timelineId} moment={moment} />
             )
       });
     }
@@ -144,6 +160,7 @@ var TimelineContainer = React.createClass({
     return {
       collection: new ScrapbookCollection(),
       displayType: 'scrapbook',
+      eventCollection: new models.EventCollection(),
       event: []
     };
   },
@@ -165,28 +182,23 @@ var TimelineContainer = React.createClass({
       self.setState({displayType: 'moment', collection: moments});
     });
   },
-  postEvent: function(event){
+  showEvent: function(event){
     var eventArray = this.state.event;
     eventArray.push(event)
     this.setState({event: eventArray});
-    console.log(this.state.event);
+    console.log(this.state.eventCollection);
   },
-  // saveTimeline: function(){
-  //   var timeline = new models.Timeline();
-  //   var urlRoot = 'https://arkiver-beta.herokuapp.com/api/timelines';
-  //   timeline.urlRoot = urlRoot + '/' + this.props.timelineId;
-  //   console.log(timeline);
-  //   timeline.set({
-  //     events: this.state.event
-  //   })
-  //   timeline.save();
-  // },
+  componentWillMount: function(){
+    this.state.eventCollection.timelineId = this.props.timelineId;
+    this.state.eventCollection.fetch();
+    console.log(this.state.eventCollection);
+  },
   render: function(){
       return(
         <div>
           <button type="button" className="btn" onClick={this.saveTimeline}>Update Timeline</button>
           <div>
-            <ModalComponent postEvent={this.postEvent} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
+            <ModalComponent eventCollection={this.state.eventCollection} showEvent={this.showEvent} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
           </div>
             <TimelineEventComponent event={this.state.event}/>
         </div>
