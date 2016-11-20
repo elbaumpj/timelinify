@@ -12,6 +12,14 @@ var models = require('../models/timeline');
 //components
 
 var TimelineEvent = React.createClass({
+  deleteEvent: function(){
+    this.props.eventItem.destroy({
+      success: function(resp){
+        console.log("event #",resp, "was destroyed");
+      }
+    })
+    this.props.updateEventState(this.props.event);
+  },
   getHistoricalData: function(){
     var historicalData = new models.HistoricalData();
     historicalData.fetch();
@@ -21,7 +29,10 @@ var TimelineEvent = React.createClass({
       <li className="timeline-event well">
         <img src={this.props.image} />
         <br />
+        <input type="date" />
+        <br />
         <button type="button" className="btn" onClick={this.getHistoricalData}>This Day in History</button>
+        <button type="button" className="btn btn-danger" onClick={this.deleteEvent}>Delete</button>
       </li>
     )
   }
@@ -29,8 +40,9 @@ var TimelineEvent = React.createClass({
 
 var TimelineEventComponent = React.createClass({
   generateItems: function(){
+    var self = this;
     return this.props.event.map(function(pic){
-      return <TimelineEvent key={pic.cid} image={pic.attributes.imageSource} description={pic.attributes.description}/>
+      return <TimelineEvent key={pic.cid} updateEventState={self.props.updateEventState} image={pic.attributes.imageSource} description={pic.attributes.description} eventItem={pic} event={self.props.event}/>
     });
   },
   render: function(){
@@ -188,19 +200,46 @@ var TimelineContainer = React.createClass({
     this.setState({event: eventArray});
     console.log(this.state.eventCollection);
   },
+  saveTimeline: function(e){
+    e.preventDefault();
+    var timeline = new models.Timeline();
+    var id = this.props.timelineId;
+    timeline.url = 'https://arkiver-beta.herokuapp.com/api/timelines' + '/' + id;
+    var timelineName = $('#timeline-name').val();
+    var timelineDescription = $('#timeline-description').val();
+    console.log(timelineName);
+    console.log(timelineDescription);
+    // timeline.set({
+    //   title: timelineName,
+    //   description: timelineDescription
+    // });
+    timeline.save({
+      title: timelineName,
+      description: timelineDescription
+    });
+    console.log(timeline);
+  },
   componentWillMount: function(){
     this.state.eventCollection.timelineId = this.props.timelineId;
     this.state.eventCollection.fetch();
     console.log(this.state.eventCollection);
+    this.setState({event: this.state.eventCollection.models}); //assuming that eventCollection comes back as an array
+  },
+  updateEventState: function(newEventState) {
+    this.setState({event: newEventState});
   },
   render: function(){
       return(
         <div>
-          <button type="button" className="btn" onClick={this.saveTimeline}>Update Timeline</button>
+
+            <input type="text" id="timeline-name" placeholder="Timeline Name" />
+            <input type="text" id="timeline-description" placeholder="Timeline Description" />
+            <button type="submit" className="btn" onClick={this.saveTimeline}>Update Timeline</button>
+
           <div>
             <ModalComponent eventCollection={this.state.eventCollection} showEvent={this.showEvent} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
           </div>
-            <TimelineEventComponent event={this.state.event}/>
+            <TimelineEventComponent event={this.state.event} updateEventState={this.updateEventState}/>
         </div>
       )
     }

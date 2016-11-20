@@ -17,7 +17,7 @@ var ListItem = React.createClass({
     var timeline = this.props.timeline;
     return(
       <div>
-        <a href={'#timeline/' + timeline.get('id') + '/'} className="list-group-item">Timeline #{timeline.get('id')}</a>
+        <a href={'#timeline/' + timeline.get('id') + '/'} className="list-group-item">Timeline #{timeline.get('title')}</a>
         <button type="button" className="btn btn-danger" onClick={this.deleteTimeline}>Delete</button>
       </div>
     )
