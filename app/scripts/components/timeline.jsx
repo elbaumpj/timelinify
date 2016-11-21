@@ -20,6 +20,10 @@ var TimelineEvent = React.createClass({
     })
     this.props.updateEventState(this.props.event);
   },
+  saveEvent: function(){
+    console.log('event description', this.props.eventItem.get('description'));
+    console.log($('.event-date').val()); //only giving me the first set value, not one that corresponds to that event
+  },
   getHistoricalData: function(){
     var historicalData = new models.HistoricalData();
     historicalData.fetch();
@@ -29,10 +33,12 @@ var TimelineEvent = React.createClass({
       <li className="timeline-event well">
         <img src={this.props.image} />
         <br />
-        <input type="date" />
+        <p>{this.props.eventItem.get('description')}</p>
+        <input className="event-date" type="date" />
         <br />
         <button type="button" className="btn" onClick={this.getHistoricalData}>This Day in History</button>
         <button type="button" className="btn btn-danger" onClick={this.deleteEvent}>Delete</button>
+        <button type="button" className="btn" onClick={this.saveEvent}>Save</button>
       </li>
     )
   }
