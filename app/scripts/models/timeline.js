@@ -25,6 +25,11 @@ var EventCollection = Backbone.Collection.extend({
   model: Event,
   url: function(){
     return 'https://arkiver-beta.herokuapp.com/api/timelines/' + this.timelineId + '/events';
+  },
+  _prepareModel: function(attrs, options) {
+    var model = Backbone.Collection.prototype._prepareModel.call(this, attrs, options);
+    model.set('timelineId', this.timelineId);
+    return model;
   }
 });
 

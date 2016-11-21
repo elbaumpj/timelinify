@@ -12,26 +12,48 @@ var models = require('../models/timeline');
 //components
 
 var TimelineEvent = React.createClass({
-  // getInitialState: function(){
-  //   return this.props.eventItem.toJSON();
-  // },
+  getInitialState: function(){
+    return this.props.eventItem.toJSON();
+  },
   deleteEvent: function(){
-    console.log('is this a model?', this.props.eventItem.urlRoot);
-    console.log('id', this.props.timelineId);
+    this.props.eventItem.timelineId = this.props.timelineId;
     this.props.eventItem.destroy({
       success: function(resp){
         console.log("event #",resp, "was destroyed");
       }
     })
-    // this.props.eventCollection.timelineId = this.props.timelineId
-    // this.props.showEvent(this.props.eventCollection);
+    this.props.updateEventCollection(this.props.eventCollection);
   },
-  setEventDate: function(){
-
+  setEventDate: function(e){
+    this.props.eventItem.timelineId = this.props.timelineId;
+    this.props.eventItem.set({
+      date: e.target.value
+    })
+    this.props.eventItem.save();
+    this.props.updateEventCollection(this.props.eventCollection);
+  },
+  setDescription: function(e){
+    this.props.eventItem.timelineId = this.props.timelineId;
+    this.props.eventItem.set({
+      description: e.target.value
+    })
+    this.props.eventItem.save();
+    this.props.updateEventCollection(this.props.eventCollection);
   },
   getHistoricalData: function(){
-    var historicalData = new models.HistoricalData();
-    historicalData.fetch();
+    var input = this.props.eventItem.get('date');
+    var d = new Date(input);
+
+    if (!!d.valueOf()){
+      var year = d.getFullYear();
+      var month = d.getMonth();
+      var day = d.getDate();
+    }
+
+    console.log(month); //it works!!! will use these to make the ajax call to the 3rd party api
+    console.log(day);
+    // var historicalData = new models.HistoricalData();
+    // historicalData.fetch();
   },
   render: function(){
     //need to set value on date input to format YYYY-MM-DD and need an onChange to set event's date to new date
@@ -40,7 +62,9 @@ var TimelineEvent = React.createClass({
         <img src={this.props.image} />
         <br />
         <p>{this.props.eventItem.get('description')}</p>
-        <input className="event-date" type="date" onChange={this.setEventDate} />
+
+        <input className="event-date" type="date" onChange={this.setEventDate} value={this.props.eventItem.get('date')} />
+        <input className="event=description" type="text" onChange={this.setDescription}></input>
         <br />
         <button type="button" className="btn" onClick={this.getHistoricalData}>This Day in History</button>
         <button type="button" className="btn btn-danger" onClick={this.deleteEvent}>Delete</button>
@@ -51,23 +75,14 @@ var TimelineEvent = React.createClass({
 });
 
 var TimelineEventComponent = React.createClass({
-  // deleteEvent: function(event){
-  //   event.destroy({
-  //     success: function(resp){
-  //       console.log("event #",resp, "was destroyed");
-  //     }
-  //   })
-  //   this.props.showEvent(this.props.eventCollection);
-  // },
   saveEvent: function(){
-    // console.log('event description', this.props.event.get('description'));
-    // console.log($('.event-date').val());
+
   },
   generateItems: function(){
     var self = this;
     return this.props.eventCollection.map(function(event){
       console.log(event);
-        return <TimelineEvent key={event.cid} timelineId={self.props.timelineId} updateEventCollection={self.props.updateEventCollection} saveEvent={self.saveEvent} image={event.get('moment').dropbox_path} description={event.get('description')} eventItem={event} eventCollection={self.props.eventCollection}/>
+      return <TimelineEvent key={event.cid} timelineId={self.props.timelineId} updateEventCollection={self.props.updateEventCollection} saveEvent={self.saveEvent} image={event.get('moment').dropbox_path} description={event.get('description')} eventItem={event} eventCollection={self.props.eventCollection}/>
     });
   },
   render: function(){
@@ -83,7 +98,7 @@ var TimelineEventComponent = React.createClass({
 var MomentThumbnailComponent = React.createClass({
   createEvent: function(timelineId){
     var event = new models.Event();
-    console.log('creating event', timelineId);
+    console.log('creating event here', timelineId);
     event.timelineId = timelineId;
     event.set({
       title: "test",
@@ -102,13 +117,13 @@ var MomentThumbnailComponent = React.createClass({
     console.log(event);
 
 
-    // this.props.updateEventCollection(this.props.eventCollection); //was causing a undefined on the map
+    this.props.updateEventCollection(this.props.eventCollection);
   },
   render: function(){
     var self = this;
     return(
       <div className="thumbnail" onClick={function(){self.createEvent(self.props.timelineId)}}>
-        <img src={this.props.moment.attributes.thumbnail_url} />
+        <img src={this.props.moment.get('thumbnail_url')} />
       </div>
     )
   }
