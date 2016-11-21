@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 
 var Timeline = Backbone.Model.extend({
-  // urlRoot: 'https://arkiver-beta.herokuapp.com/api/timelines'
+  urlRoot: 'https://arkiver-beta.herokuapp.com/api/timelines'
 });
 
 var TimelineCollection = Backbone.Collection.extend({
@@ -16,6 +16,7 @@ var TimelineCollection = Backbone.Collection.extend({
 
 var Event = Backbone.Model.extend({
   urlRoot: function(){
+    console.log("timeline id is ", this);
     return 'https://arkiver-beta.herokuapp.com/api/timelines/' + this.timelineId + '/events';
   }
 });
