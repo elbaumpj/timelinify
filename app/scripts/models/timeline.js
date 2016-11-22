@@ -1,5 +1,5 @@
 var Backbone = require('backbone');
-
+var _ = require('underscore');
 
 var Timeline = Backbone.Model.extend({
   urlRoot: 'https://arkiver-beta.herokuapp.com/api/timelines'
@@ -34,7 +34,13 @@ var EventCollection = Backbone.Collection.extend({
 });
 
 var HistoricalData = Backbone.Model.extend({
-  urlRoot: 'http://history.muffinlabs.com/date'
+  // urlRoot: 'http://history.muffinlabs.com/date'
+  url: function(){
+    return 'http://peters-proxy.herokuapp.com/history?month=' + this.get('month') + '&day=' + this.get('day');
+  },
+  parse: function(data){
+    return _.sample(data.data.Events);
+  }
 });
 
 module.exports = {
