@@ -19,7 +19,11 @@ var ScrapbookCollection = Backbone.Collection.extend({
         xhr.setRequestHeader('Authorization', 'Token token=a9e757198b0339c5441cea4cbe8cd51a');
       },
       success: function(resp){
+        console.log("RESP:", resp);
         self.add(resp.collections);
+        // let newModels = new ScrapbookCollection(resp.collections)
+        // console.log("newModels:", newModels);
+        // self.add(newModels.models);
         self.url = "https://arkiver-beta.herokuapp.com"+resp.links.next;
       }
     });

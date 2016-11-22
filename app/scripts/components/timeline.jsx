@@ -9,6 +9,7 @@ var moment = require('moment');
 var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
 var MomentCollection = require('../models/scrapbook').MomentCollection;
 var models = require('../models/timeline');
+var NavTemplate = require('./navbar.jsx').NavTemplate;
 //components
 
 var TimelineEvent = React.createClass({
@@ -168,10 +169,20 @@ var ScrapbookThumbnailComponent = React.createClass({
 
 var ModalComponent = React.createClass({
   getInitialState: function() {
-      return {showModal: false};
+      return {
+        showModal: false,
+        collections: this.props.collection
+      };
     },
     close: function() {
       this.setState({ showModal: false });
+    },
+    componentDidMount: function() {
+      this.props.collection.on("add", () => {
+        this.setState({
+          collections: this.props.collection
+        })
+      })
     },
 
     open: function() {
@@ -193,6 +204,8 @@ var ModalComponent = React.createClass({
       var self = this;
       var pictureThumbnails;
       if(this.props.displayType == 'scrapbook'){
+        console.log("COLLECTION:", this.props.collection);
+        console.log("length:", this.props.collection.models.length);
         var pictureThumbnails = this.props.collection.models.map(function(collection){
           return (
             <ScrapbookThumbnailComponent key={collection.id} scrapbook={collection} viewMoments={self.props.viewMoments}/>
@@ -283,7 +296,7 @@ var TimelineContainer = React.createClass({
   render: function(){
       return(
         <div>
-
+            <NavTemplate />
             <input type="text" id="timeline-name" placeholder="Timeline Name" />
             <input type="text" id="timeline-description" placeholder="Timeline Description" />
             <button type="submit" className="btn" onClick={this.saveTimeline}>Update Timeline</button>
