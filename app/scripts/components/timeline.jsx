@@ -53,7 +53,11 @@ var TimelineEvent = React.createClass({
     console.log(month); //it works!!! will use these to make the ajax call to the 3rd party api
     console.log(day);
     // var historicalData = new models.HistoricalData();
+    // var historicalData.urlRoot = 'http://history.muffinlabs.com/date' + '/' + month + '/' + 'day';
     // historicalData.fetch();
+    //this.props.eventItem.set({
+    // description: //whatever random fact comes back on the fetch
+  //});
   },
   render: function(){
     //need to set value on date input to format YYYY-MM-DD and need an onChange to set event's date to new date
@@ -86,7 +90,9 @@ var TimelineEventComponent = React.createClass({
     });
   },
   render: function(){
-      var pictures = this.generateItems();
+    var pictures = this.generateItems();
+
+
     return(
       <ul className="timeline timeline-events-container">
       {pictures}
