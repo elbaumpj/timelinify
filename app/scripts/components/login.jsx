@@ -27,12 +27,16 @@ var SignInComponent = React.createClass({
   render: function(){
     return(
       <div className="log-in-container">
-        <form id="login" onSubmit={this.handleSubmit}>
+        <form id="login" className="col-xs-12 col-md-6" onSubmit={this.handleSubmit}>
           <div className="instructions">Login to your account</div>
-          <input className="form-control" name="email" id="email" type="email" placeholder="Email" />
-          <input className="form-control" name="password" id="password" type="password" placeholder="Password" />
+          <input className="form-control login-field" name="email" id="email" type="email" placeholder="Email" />
+          <input className="form-control login-field" name="password" id="password" type="password" placeholder="Password" />
           <input className="btn login-button" type="submit" value="Log In" />
       </form>
+      <div className="col-xs-12 col-md-6 time-quote">
+        <p>It takes a long time to become young.</p>
+        <p>-Pablo Picasso</p>
+      </div>
       </div>
     )
   }
@@ -58,7 +62,7 @@ var LoginContainer = React.createClass({
           <BannerComponent />
         </div>
         <div>
-        <div className="col-md-4">
+        <div>
           <SignInComponent router={this.props.router} />
         </div>
         </div>

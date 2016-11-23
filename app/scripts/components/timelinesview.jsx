@@ -6,6 +6,9 @@ var models = require('../models/timeline');
 
 
 var ListItem = React.createClass({
+  navToTimeline: function(){
+    Backbone.history.navigate('#timeline/' + this.props.timeline.get('id') + '/', {trigger: true});
+  },
   deleteTimeline: function(){
     this.props.timeline.destroy({
       success: function(resp){
@@ -14,11 +17,24 @@ var ListItem = React.createClass({
     })
   },
   render: function(){
-    var timeline = this.props.timeline;
+    var events = this.props.timeline.get('events');
+    console.log(this.props.timeline.get('events'));
+
+    var eventPhotos = events.map(function(event){
+      return <img key={event.id} src={event.moment.thumbnail_url} />
+    });
     return(
       <div>
-        <a href={'#timeline/' + timeline.get('id') + '/'} className="list-group-item">{timeline.get('title')}</a>
-        <button type="button" className="btn btn-danger" onClick={this.deleteTimeline}>Delete</button>
+        {eventPhotos}
+        <br />
+        <div>
+          <h5 className="timeline-title-description title">{this.props.timeline.get('title')}</h5>
+          <p className="timeline-title-description">{this.props.timeline.get('description')}</p>
+        </div>
+        <div className="timeline-buttons">
+          <button type="button" className="btn delete-button" onClick={this.deleteTimeline}>Delete</button>
+          <button type="button" className="btn login-button" onClick={this.navToTimeline}>Edit</button>
+        </div>
       </div>
     )
   }
@@ -68,8 +84,8 @@ var TimelineListViewContainer = React.createClass({
   render: function(){
     return(
       <div>
-        <h1>View and Create Your Timelines</h1>
-        <input className="btn" type="submit" value="Create a New Timeline" onClick={this.createTimeline}/>
+        <h2 className="timeline-title-description center">View and Create Your Timelines</h2>
+        <input className="btn login-button center-button" type="submit" value="Create a New Timeline" onClick={this.createTimeline}/>
         <TimelineList timelineCollection={this.state.timelineCollection}/>
       </div>
     )

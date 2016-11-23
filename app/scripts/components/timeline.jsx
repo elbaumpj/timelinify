@@ -66,9 +66,9 @@ var TimelineEvent = React.createClass({
     })
 
     historicalData.fetch().then(function(){
-      console.log(historicalData.get('text'));
+      console.log(historicalData);
       self.props.eventItem.set({
-      description: historicalData.get('text')
+      description: historicalData.get('year') + ': ' + historicalData.get('text')
     });
       self.props.eventItem.timelineId = self.props.timelineId;
       self.props.eventItem.save();
@@ -82,23 +82,19 @@ var TimelineEvent = React.createClass({
       <li className="timeline-event well">
         <img src={this.props.image} />
         <br />
-        <p>{this.props.eventItem.get('description')}</p>
+        <p className="event-description">{this.props.eventItem.get('description')}</p>
 
         <input className="event-date" type="date" onChange={this.setEventDate} value={this.props.eventItem.get('date')} />
         <input className="event=description" type="text" onChange={this.setDescription}></input>
         <br />
-        <button type="button" className="btn" onClick={this.getHistoricalData}>This Day in History</button>
-        <button type="button" className="btn btn-danger" onClick={this.deleteEvent}>Delete</button>
-        <button type="button" className="btn" onClick={this.props.saveEvent}>Save</button>
+        <button type="button" className="btn login-button" onClick={this.getHistoricalData}>This Day in History</button>
+        <button type="button" className="btn delete-button" onClick={this.deleteEvent}>Delete</button>
       </li>
     )
   }
 });
 
 var TimelineEventComponent = React.createClass({
-  saveEvent: function(){
-
-  },
   generateItems: function(){
     var self = this;
     return this.props.eventCollection.map(function(event){
@@ -299,7 +295,7 @@ var TimelineContainer = React.createClass({
             <NavTemplate />
             <input type="text" id="timeline-name" placeholder="Timeline Name" />
             <input type="text" id="timeline-description" placeholder="Timeline Description" />
-            <button type="submit" className="btn" onClick={this.saveTimeline}>Update Timeline</button>
+            <button type="submit" className="btn login-button" onClick={this.saveTimeline}>Update Timeline</button>
 
           <div>
             <ModalComponent eventCollection={this.state.eventCollection} updateEventCollection={this.updateEventCollection} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
