@@ -244,11 +244,12 @@ var TimelineContainer = React.createClass({
       collection: new ScrapbookCollection(),
       displayType: 'scrapbook',
       eventCollection: new models.EventCollection(),
+      titleHeader: '',
+      descriptionHeader: ''
     };
   },
   componentDidMount: function(){
     var collection = this.state.collection;
-
     collection.fetch().then(function(resp){
         console.log('collection fetched, resp is ', resp);
         collection.url = "https://arkiver-beta.herokuapp.com"+collection.models[0].get("links").next;
@@ -286,20 +287,36 @@ var TimelineContainer = React.createClass({
     var self = this;
     this.state.eventCollection.timelineId = this.props.timelineId;
     this.state.eventCollection.fetch().then(function(){
-      self.setState({eventCollection: self.state.eventCollection}); //dan suggests setting eventCollection to itself and pass that
+      self.setState({eventCollection: self.state.eventCollection});
+    });
+
+    var timeline = new models.Timeline();
+    var id = this.props.timelineId;
+    timeline.set("id", id);
+    timeline.url = 'https://arkiver-beta.herokuapp.com/api/timelines' + '/' + id;
+
+    var self = this;
+    timeline.fetch().then(function(){
+      self.setState({titleHeader: timeline.get('title')});
+      self.setState({descriptionHeader: timeline.get('description')});
     });
   },
   render: function(){
       return(
         <div>
             <NavTemplate />
-            <input type="text" id="timeline-name" placeholder="Timeline Name" />
-            <input type="text" id="timeline-description" placeholder="Timeline Description" />
-            <button type="submit" className="btn login-button" onClick={this.saveTimeline}>Update Timeline</button>
-
-          <div>
-            <ModalComponent eventCollection={this.state.eventCollection} updateEventCollection={this.updateEventCollection} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
-          </div>
+            <div>
+              <input type="text" id="timeline-name" placeholder="Timeline Name" />
+              <input type="text" id="timeline-description" placeholder="Timeline Description" />
+              <button type="submit" className="btn login-button" onClick={this.saveTimeline}>Update Timeline</button>
+            </div>
+            <div>
+              <h2 className="center title-banner timeline-title-description">{this.state.titleHeader}</h2>
+              <h4 className="center description-banner timeline-title-description">{this.state.descriptionHeader}</h4>
+            </div>
+            <div>
+              <ModalComponent eventCollection={this.state.eventCollection} updateEventCollection={this.updateEventCollection} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
+            </div>
             <TimelineEventComponent timelineId={this.props.timelineId} updateEventCollection={this.updateEventCollection} eventCollection={this.state.eventCollection} />
         </div>
       )
