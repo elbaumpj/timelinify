@@ -49,6 +49,28 @@ var TimelineEvent = React.createClass({
     var day = d.getDate() + 1;
     console.log(month, day);
 
+    var self = this;
+
+    $.ajax({
+      url:'http://history.muffinlabs.com/date/' + month + '/' + day,
+      jsonp: 'callback',
+      dataType: 'jsonp',
+      data: {
+        format: 'json'
+      },
+      success: function(response){
+        var events = response.data.Events.length
+        var randomEvent = Math.floor(Math.random() * events);
+        var year = response.data.Events[randomEvent].year;
+        self.props.eventItem.timelineId = self.props.timelineId;
+        self.props.eventItem.set({
+          description: year + ': ' + response.data.Events[randomEvent].text
+        });
+        self.props.eventItem.save();
+        self.props.updateEventCollection(self.props.eventCollection);
+      }
+    })
+
     // if (!!d.valueOf()){
     //   var year = d.getFullYear();
     //   var month = d.getMonth();
@@ -57,23 +79,23 @@ var TimelineEvent = React.createClass({
     //   console.log(day);
     // }
 
-    var self = this;
-
-    var historicalData = new models.HistoricalData();
-    historicalData.set({
-      month: month,
-      day: day
-    })
-
-    historicalData.fetch().then(function(){
-      console.log(historicalData);
-      self.props.eventItem.set({
-      description: historicalData.get('year') + ': ' + historicalData.get('text')
-    });
-      self.props.eventItem.timelineId = self.props.timelineId;
-      self.props.eventItem.save();
-      self.props.updateEventCollection(self.props.eventCollection);
-    });
+    // var self = this;
+    //
+    // var historicalData = new models.HistoricalData();
+    // historicalData.set({
+    //   month: month,
+    //   day: day
+    // })
+    //
+    // historicalData.fetch().then(function(){
+    //   console.log(historicalData);
+    //   self.props.eventItem.set({
+    //   description: historicalData.get('year') + ': ' + historicalData.get('text')
+    // });
+    //   self.props.eventItem.timelineId = self.props.timelineId;
+    //   self.props.eventItem.save();
+    //   self.props.updateEventCollection(self.props.eventCollection);
+    // });
 
   },
   render: function(){
@@ -154,9 +176,14 @@ var ScrapbookThumbnailComponent = React.createClass({
     this.props.viewMoments(this.props.scrapbook.id);
   },
   render: function(){
+    console.log('scrapbook as props', this.props.scrapbook);
+    var cover;
+    if (this.props.scrapbook.cover) {
+      cover = this.props.scrapbook.cover;
+    }
     return(
       <div className="thumbnail" onClick={this.viewMoments}>
-        <img src={this.props.scrapbook.cover} />
+        <img src={cover}/>
         <p>{this.props.scrapbook.title}</p>
       </div>
     )

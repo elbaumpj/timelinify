@@ -20,7 +20,12 @@ var ScrapbookCollection = Backbone.Collection.extend({
       },
       success: function(resp){
         console.log("RESP:", resp);
-        self.add(resp.collections);
+        resp.collections.map(function(collection){
+          self.add(collection);
+        });
+
+        //self.add(resp.collections); that's what we had before w/ Jake...i'm manipulating to see if I can fix
+
         // let newModels = new ScrapbookCollection(resp.collections)
         // console.log("newModels:", newModels);
         // self.add(newModels.models);
