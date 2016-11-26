@@ -8,30 +8,31 @@ var ScrapbookModel = Backbone.Model.extend({
 
 var ScrapbookCollection = Backbone.Collection.extend({
   model: ScrapbookModel,
-  url: 'https://arkiver-beta.herokuapp.com/api/collections?paginate=true&count=20&page=1',
-  getNextSet: function() {
-    console.log("this is ", this);
-    var self = this;
-    $.ajax({
-      url: this.url,
+  url: function(){
+    return 'https://arkiver-beta.herokuapp.com/api/collections?' + this.nextQuery;
+  },
+  nextQuery: 'paginate=true&count=20&page=1',
+  initialize: function(){
+    $.ajaxSetup({
       beforeSend: function(xhr){
         xhr.setRequestHeader("Accept", "*/*,version=2");
         xhr.setRequestHeader('Authorization', 'Token token=a9e757198b0339c5441cea4cbe8cd51a');
-      },
-      success: function(resp){
-        console.log("RESP:", resp);
-        resp.collections.map(function(collection){
-          self.add(collection);
-        });
-
-        //self.add(resp.collections); that's what we had before w/ Jake...i'm manipulating to see if I can fix
-
-        // let newModels = new ScrapbookCollection(resp.collections)
-        // console.log("newModels:", newModels);
-        // self.add(newModels.models);
-        self.url = "https://arkiver-beta.herokuapp.com"+resp.links.next;
       }
     });
+  },
+
+  parse: function(data){
+    return data.collections;
+  },
+
+  getNextSet: function() {
+    console.log("this is ", this);
+    var self = this;
+
+    this.fetch().then(function(response){
+      self.nextQuery = response.links.next ? response.links.next.split('?')[1] : '';
+    });
+
   }
 });
 

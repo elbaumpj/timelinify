@@ -33,7 +33,7 @@ var ListItem = React.createClass({
         </div>
         <div className="timeline-buttons">
           <button type="button" className="btn delete-button" onClick={this.deleteTimeline}>Delete</button>
-          <button type="button" className="btn login-button" onClick={this.navToTimeline}>Edit</button>
+          <button type="button" className="btn login-button" onClick={this.navToTimeline}>View and Edit</button>
         </div>
       </div>
     )

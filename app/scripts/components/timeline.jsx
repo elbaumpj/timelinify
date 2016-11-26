@@ -107,7 +107,7 @@ var TimelineEvent = React.createClass({
         <p className="event-description">{this.props.eventItem.get('description')}</p>
 
         <input className="event-date" type="date" onChange={this.setEventDate} value={this.props.eventItem.get('date')} />
-        <input className="event=description" type="text" onChange={this.setDescription}></input>
+        <input className="event=description" type="text" placeholder="Description" onChange={this.setDescription}></input>
         <br />
         <button type="button" className="btn login-button" onClick={this.getHistoricalData}>This Day in History</button>
         <button type="button" className="btn delete-button" onClick={this.deleteEvent}>Delete</button>
@@ -176,15 +176,14 @@ var ScrapbookThumbnailComponent = React.createClass({
     this.props.viewMoments(this.props.scrapbook.id);
   },
   render: function(){
-    console.log('scrapbook as props', this.props.scrapbook);
     var cover;
-    if (this.props.scrapbook.cover) {
-      cover = this.props.scrapbook.cover;
+    if (this.props.scrapbook.get('cover')) {
+      cover = this.props.scrapbook.get('cover');
     }
     return(
       <div className="thumbnail" onClick={this.viewMoments}>
         <img src={cover}/>
-        <p>{this.props.scrapbook.title}</p>
+        <p>{this.props.scrapbook.get('title')}</p>
       </div>
     )
   }
@@ -197,9 +196,11 @@ var ModalComponent = React.createClass({
         collections: this.props.collection
       };
     },
+
     close: function() {
       this.setState({ showModal: false });
     },
+
     componentDidMount: function() {
       this.props.collection.on("add", () => {
         this.setState({
@@ -256,8 +257,7 @@ var ModalComponent = React.createClass({
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={this.close}>Close</Button>
-              <Button onClick={this.props.navToScrapbook}>Back</Button>
-              <Button onClick={function(){self.props.collection.getNextSet()}}>Next</Button>
+              <Button onClick={function(){self.props.collection.getNextSet()}}>More</Button>
             </Modal.Footer>
           </Modal>
         </div>

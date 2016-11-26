@@ -81,6 +81,7 @@ img {
 
 .title {
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .timeline-title-description {
@@ -129,6 +130,13 @@ li {
   text-transform: uppercase;
 }
 
+#timeline-name {
+  height: 33px;
+}
+
+#timeline-description {
+  height: 33px;
+}
 //timeline media query for responsive
 
 @media (max-width: 767px) {
