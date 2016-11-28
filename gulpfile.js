@@ -1,11 +1,10 @@
 var gulp = require("gulp"),
     awspublish = require('gulp-awspublish'),
     jf = require('jsonfile'),
-    rev = require('gulp-rev'),
     headers = { 'Cache-Control': 'max-age=315360000, no-transform, public' };
 
-gulp.task('aws_printcenter_production', function() {
-  creds = jf.readFileSync("aws-printcenter-production-creds.json")
+gulp.task('aws_timeline_production', function() {
+  creds = jf.readFileSync("aws-timeline-production-creds.json")
   publisher = awspublish.create(creds)
 
   return gulp.src('./dist/{,*/}*{,*/}*.**')
@@ -14,8 +13,8 @@ gulp.task('aws_printcenter_production', function() {
     .pipe(publisher.cache())
     .pipe(awspublish.reporter());
 });
-gulp.task('aws_printcenter_staging', function() {
-  creds = jf.readFileSync("aws-printcenter-staging-creds.json")
+gulp.task('aws_timeline_staging', function() {
+  creds = jf.readFileSync("aws-timeline-staging-creds.json")
   publisher = awspublish.create(creds)
 
   return gulp.src('./dist/{,*/}*{,*/}*.**')

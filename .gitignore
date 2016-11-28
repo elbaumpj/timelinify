@@ -1,6 +1,8 @@
 
 # Created by https://www.gitignore.io/api/node
-
+# aws keys and whatnot
+aws-timeline-staging-creds.json
+aws-timeline-production-creds.json
 ### Node ###
 # Logs
 logs
