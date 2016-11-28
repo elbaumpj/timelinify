@@ -27,7 +27,7 @@ var ListItem = React.createClass({
       <div>
         {eventPhotos}
         <br />
-        <div>
+        <div className="timeline-list-info">
           <h5 className="timeline-title-description title">{this.props.timeline.get('title')}</h5>
           <p className="timeline-title-description">{this.props.timeline.get('description')}</p>
         </div>

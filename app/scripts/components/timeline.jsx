@@ -70,33 +70,6 @@ var TimelineEvent = React.createClass({
         self.props.updateEventCollection(self.props.eventCollection);
       }
     })
-
-    // if (!!d.valueOf()){
-    //   var year = d.getFullYear();
-    //   var month = d.getMonth();
-    //   console.log(month);
-    //   var day = d.getDate();
-    //   console.log(day);
-    // }
-
-    // var self = this;
-    //
-    // var historicalData = new models.HistoricalData();
-    // historicalData.set({
-    //   month: month,
-    //   day: day
-    // })
-    //
-    // historicalData.fetch().then(function(){
-    //   console.log(historicalData);
-    //   self.props.eventItem.set({
-    //   description: historicalData.get('year') + ': ' + historicalData.get('text')
-    // });
-    //   self.props.eventItem.timelineId = self.props.timelineId;
-    //   self.props.eventItem.save();
-    //   self.props.updateEventCollection(self.props.eventCollection);
-    // });
-
   },
   render: function(){
     //need to set value on date input to format YYYY-MM-DD and need an onChange to set event's date to new date
