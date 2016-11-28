@@ -176,6 +176,12 @@ li {
   }
 }
 
+@media (max-width: 400px) {
+  .update-timeline-container {
+    
+  }
+}
+
 /* for timeline event carrot on left side */
 .timeline-events-container>li:nth-child(odd):after, .timeline-events-container>li:nth-child(odd):before {
 	right: 100%;

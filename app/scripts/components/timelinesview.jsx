@@ -47,7 +47,7 @@ var TimelineList = React.createClass({
       return <ListItem key={timeline.cid} timeline={timeline}/>
     });
     return(
-      <div className>
+      <div className="col-sm-12">
         {timelineList}
       </div>
     )

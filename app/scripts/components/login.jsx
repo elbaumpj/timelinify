@@ -46,7 +46,7 @@ var BannerComponent = React.createClass({
   render: function(){
     return(
       <div className="banner">
-        <h2> <img src='../../dist/images/timeline_icon.png' />Timelinify</h2>
+        <h2> <img src='../../images/timeline_icon.png' />Timelinify</h2>
       </div>
     )
   }

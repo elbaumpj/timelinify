@@ -230,7 +230,7 @@ var ModalComponent = React.createClass({
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={this.close}>Close</Button>
-              <Button onClick={function(){self.props.collection.getNextSet()}}>More</Button>
+              <Button onClick={function(){self.props.collection.getNextSet()}}>Next</Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -305,7 +305,7 @@ var TimelineContainer = React.createClass({
       return(
         <div>
             <NavTemplate />
-            <div>
+            <div className="update-timeline-container">
               <input type="text" id="timeline-name" placeholder="Timeline Name" />
               <input type="text" id="timeline-description" placeholder="Timeline Description" />
               <button type="submit" className="btn login-button" onClick={this.saveTimeline}>Update Timeline</button>

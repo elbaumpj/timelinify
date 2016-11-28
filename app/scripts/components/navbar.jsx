@@ -12,7 +12,7 @@ var NavTemplate = React.createClass({
   render: function(){
     return(
       <nav className="navbar navbar-default">
-        <h3 className="title-header"> <img src='../../dist/images/timeline_icon.png' /> Timelinify</h3>
+        <h3 className="title-header"> <img src='../../images/timeline_icon.png' /> Timelinify</h3>
         <div>
           <span className="nav-spans" onClick={this.navToLogin}>Login</span>&nbsp; &nbsp;
           <span className="nav-spans" onClick={this.navToTimelines}> Your Timelines</span>
