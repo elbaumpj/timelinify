@@ -3,6 +3,8 @@
 # aws keys and whatnot
 aws-timeline-staging-creds.json
 aws-timeline-production-creds.json
+.awspublish-timeline.arkiver.com
+.awspublish-timeline-staging.arkiver.com
 ### Node ###
 # Logs
 logs
