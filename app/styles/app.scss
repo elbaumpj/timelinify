@@ -99,6 +99,10 @@ img {
   background-color: white;
 }
 
+.create-timeline-button{
+  margin-bottom: 5px;
+}
+
 //timeline styling
 
 .timeline {
@@ -138,21 +142,41 @@ li {
   top: 0;
   width: 4px;
   height: 100%;
-  background-color: #53B0AB;
+  background-color: #85BD9C;
 }
 
 #timeline-name {
   height: 33px;
   text-transform: uppercase;
   background-color: inherit;
-  border: none;
+  border: transparent;
   font-size: 30px;
   color: #7D7772;
+  text-align: center;
+  width: 80%;
+}
+
+#timeline-name:focus {
+  box-shadow: none;
+  outline: none;
 }
 
 #timeline-description {
   height: 33px;
+  background-color: inherit;
+  border: transparent;
+  font-size: 30px;
+  color: #7D7772;
+  text-align: center;
+  width: 80%;
+  height: 38px;
 }
+
+#timeline-description:focus {
+  box-shadow: none;
+  outline: none;
+}
+
 //timeline media query for responsive
 
 @media (max-width: 767px) {
@@ -181,7 +205,7 @@ li {
   	margin-top: -30px;
   }
   .timeline-line{
-    margin-left: -5%;
+    margin-left: -48%;
   }
   .add-button{
     margin-bottom: 30px;
@@ -215,6 +239,14 @@ li {
     span {
       float: left;
     }
+  }
+  #timeline-name {
+    font-size: 30px;
+    margin-left: 50%
+  }
+  #timeline-description {
+    font-size: 20px;
+    margin-left: 50%
   }
 }
 
@@ -272,6 +304,20 @@ li {
   color: #7D7772;
   font-style: italic;
   margin-top: 10px;
+  border: none;
+  background-color: #F5F5F5;
+  width: 90%;
+}
+
+.event-description:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.event-date {
+  background-color: #F5F5F5;
+  border: none;
+  box-shadow: none;
 }
 
 //nav styling
@@ -280,12 +326,14 @@ li {
 }
 .nav-spans{
   float: none;
-  margin-left: 5px;
-  margin-right: 10px;
   color: #76BE9D;
   font-family: "proxima-nova", sans-serif;
   font-size: 14px;
   font-weight: bold;
+}
+
+.nav-spans-container {
+  margin-left: 16px;
 }
 
 h3{
@@ -298,8 +346,10 @@ h3{
 .add-button{
   margin-top: 50px;
   margin-left: 50%;
-  color: #53B0AB;
+  color: #85BD9C;
   font-size: 35px;
+  position: fixed;
+  z-index: 9;
 }
 
 .login-button {

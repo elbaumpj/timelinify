@@ -79,10 +79,9 @@ var TimelineEvent = React.createClass({
       <li className="timeline-event well">
         <img src={this.props.image} />
         <br />
-        <p className="event-description">{this.props.eventItem.get('description')}</p>
-
+        <input className="event-description" type="text" placeholder={this.props.eventItem.get('description')} onChange={this.setDescription}></input>
+        <br />
         <input className="event-date" type="date" onChange={this.setEventDate} value={this.props.eventItem.get('date')} />
-        <input className="event=description" type="text" placeholder="Description" onChange={this.setDescription}></input>
         <br />
         <button type="button" className="btn login-button" onClick={this.getHistoricalData}>This Day in History</button>
         <button type="button" className="btn delete-button" onClick={this.deleteEvent}>Delete</button>
@@ -127,14 +126,10 @@ var MomentThumbnailComponent = React.createClass({
     var self = this;
     event.save().then(function(){
       console.log('fetch after save', self.props.eventCollection);
+      self.props.eventCollection.add(event);
+      self.props.updateEventCollection(self.props.eventCollection);
     });
 
-    this.props.eventCollection.add(event);
-
-    console.log(event);
-
-
-    this.props.updateEventCollection(this.props.eventCollection);
   },
   render: function(){
     var self = this;
@@ -233,7 +228,7 @@ var ModalComponent = React.createClass({
 
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={this.close}>Close</Button>
+              <Button onClick={this.close}>Done</Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -326,13 +321,10 @@ var TimelineContainer = React.createClass({
       return(
         <div>
             <NavTemplate />
-            <div className="update-timeline-container">
-              <input type="text" id="timeline-name" placeholder="Timeline Name" onKeyDown={this.saveTimeline} />
-              <input type="text" id="timeline-description" placeholder="Timeline Description" onKeyDown={this.saveTimeline} />
-            </div>
-            <div className="title-heading-container">
-              <h2 className="center title-banner timeline-title-description">{this.state.titleHeader}</h2>
-              <h4 className="center description-banner timeline-title-description">{this.state.descriptionHeader}</h4>
+            <div className="update-timeline-container center">
+              <input type="text" id="timeline-name" placeholder={this.state.titleHeader} onChange={this.saveTimeline} />
+              <br />
+              <input type="text" id="timeline-description" placeholder={this.state.descriptionHeader} onChange={this.saveTimeline} />
             </div>
             <div>
               <ModalComponent eventCollection={this.state.eventCollection} updateEventCollection={this.updateEventCollection} timelineId={this.props.timelineId} displayType={this.state.displayType} collection={this.state.collection} viewMoments={this.viewMoments} />
