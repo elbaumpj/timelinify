@@ -86,12 +86,17 @@ img {
 
 .timeline-title-description {
   color: #7D7772;
-  font-family: sans-serif;
+  font-family: "proxima-nova", sans-serif;
   margin-top: 10px;
 }
 
 .timeline-list-info{
   display: inline-block;
+  font-family: "proxima-nova", sans-serif;
+}
+
+.timeline-list-heading {
+  background-color: white;
 }
 
 //timeline styling
@@ -99,17 +104,9 @@ img {
 .timeline {
   position: relative;
   list-style: none;
+  overflow: hidden;
 }
 
-.timeline::before {
-  margin-left: 48%;
-  position: absolute;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  content: '';
-  background-color: #53B0AB;
-}
 
 li {
   display: inline-block;
@@ -117,8 +114,9 @@ li {
 
 .timeline-events-container>li:nth-child(odd){
   position: relative;
-  margin-left: 52%;
-  margin-right: 2%;
+  width: 47%;
+  float: right;
+  margin-right: 15px;
 }
 
 .timeline-event {
@@ -134,8 +132,22 @@ li {
   text-transform: uppercase;
 }
 
+.timeline-line {
+  left: 51%;
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #53B0AB;
+}
+
 #timeline-name {
   height: 33px;
+  text-transform: uppercase;
+  background-color: inherit;
+  border: none;
+  font-size: 30px;
+  color: #7D7772;
 }
 
 #timeline-description {
@@ -168,7 +180,7 @@ li {
   	border-width: 20px;
   	margin-top: -30px;
   }
-  .timeline:before{
+  .timeline-line{
     margin-left: -5%;
   }
   .add-button{
@@ -176,9 +188,33 @@ li {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 415px) {
   .update-timeline-container {
-    
+    width: 50%;
+  }
+  .title-heading-container {
+    h2{
+      font-size: 20px;
+    }
+  }
+  .timeline-event {
+    width: 70%;
+  }
+  .navbar {
+    h3 {
+      text-align: center;
+    }
+  }
+  .nav-spans {
+    margin-left: 10px;
+  }
+  .timeline-list-heading {
+    h2 {
+      font-size: 15px;
+    }
+    span {
+      float: left;
+    }
   }
 }
 
@@ -206,7 +242,10 @@ li {
 .timeline-events-container>li:nth-child(even){
 	position: relative;
 	background: #F5F5F5;
-  margin-right: 52%;
+  width: 47%;
+  float: left;
+  margin-top: 20px;
+  clear: both;
 }
 .timeline-events-container>li:nth-child(even):after, .timeline-events-container>li:nth-child(even):before {
 	left: 100%;
@@ -219,12 +258,7 @@ li {
 	pointer-events: none;
 }
 
-// .timeline-events-container>li:nth-child(even):after {
-// 	border-color: rgba(245, 245, 245, 0);
-// 	border-left-color: #F5F5F5;
-// 	border-width: 30px;
-// 	margin-top: -30px;
-// }
+
 .timeline-events-container>li:nth-child(even):before {
 	border-color: rgba(245, 245, 245, 0);
 	border-left-color: #F5F5F5;
@@ -245,11 +279,11 @@ li {
   color: #5A5C5B;
 }
 .nav-spans{
-  float: right;
+  float: none;
   margin-left: 5px;
   margin-right: 10px;
   color: #76BE9D;
-  font-family: sans-serif;
+  font-family: "proxima-nova", sans-serif;
   font-size: 14px;
   font-weight: bold;
 }
@@ -289,4 +323,31 @@ h3{
 .delete-button:hover{
   color: white;
   background-color: #ef6666;
+}
+
+//timeline animations, credit to https://codyhouse.co/gem/vertical-timeline/
+
+.cssanimations .timeline-event.is-hidden {
+  visibility: hidden;
+}
+
+.cssanimations .timeline-event.bounce-in {
+  visibility: visible;
+  animation: cd-bounce-1 0.6s;
+}
+
+@keyframes cd-bounce-1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }

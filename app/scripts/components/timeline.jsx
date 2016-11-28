@@ -3,8 +3,10 @@ var Button = require('react-bootstrap').Button;
 var Popover = require('react-bootstrap').Popover;
 var Tooltip = require('react-bootstrap').Tooltip;
 var React = require('react');
+var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var moment = require('moment');
+var _ = require("underscore")
 //local imports
 var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
 var MomentCollection = require('../models/scrapbook').MomentCollection;
@@ -103,6 +105,7 @@ var TimelineEventComponent = React.createClass({
 
     return(
       <ul className="timeline timeline-events-container">
+        <div className="timeline-line"></div>
       {pictures}
      </ul>
     )
@@ -226,11 +229,11 @@ var ModalComponent = React.createClass({
             <Modal.Body>
 
               {pictureThumbnails}
+              <Button onClick={function(){self.props.collection.getNextSet()}}>Next</Button>
 
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={this.close}>Close</Button>
-              <Button onClick={function(){self.props.collection.getNextSet()}}>Next</Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -239,7 +242,18 @@ var ModalComponent = React.createClass({
 });
 
 var TimelineContainer = React.createClass({
+  // handleScroll: function(){
+  //   $(window).on('scroll', function(){
+	//     $('.timeline').each(function(){
+	// 	    if( $(this).offset().top <= $(window).scrollTop()+$(window).height()*0.75 && $(this).find('.timeline-event').hasClass('is-hidden') ) {
+	// 		    $(this).find('.timeline-event').removeClass('is-hidden').addClass('bounce-in');
+	// 	    }
+	//     });
+  //   });
+  // },
   getInitialState: function(){
+    // this debounces the function, meaning that it will only be called once after 1500 ms have passed
+    this.saveTimeline = _.debounce(this.saveTimeline, 1500)
     return {
       collection: new ScrapbookCollection(),
       displayType: 'scrapbook',
@@ -255,7 +269,13 @@ var TimelineContainer = React.createClass({
         collection.url = "https://arkiver-beta.herokuapp.com"+collection.models[0].get("links").next;
         collection.models = collection.models[0].get("collections");
       });
+
+      //for scroll event
+    // window.addEventListener('scroll', this.handleScroll);
   },
+  // componentWillMount: function(){
+  //   window.removeEventListener('scroll', this.handleScroll);
+  // },
   viewMoments: function(scrapbookId){
     console.log(scrapbookId);
     var moments = new MomentCollection();
@@ -271,7 +291,8 @@ var TimelineContainer = React.createClass({
     console.log('updating event collection method', this.state.eventCollection);
   },
   saveTimeline: function(e){
-    e.preventDefault();
+    console.log("saveTimeline called");
+    // e.preventDefault();
     var timeline = new models.Timeline();
     var id = this.props.timelineId;
     timeline.set("id", id);
@@ -306,11 +327,10 @@ var TimelineContainer = React.createClass({
         <div>
             <NavTemplate />
             <div className="update-timeline-container">
-              <input type="text" id="timeline-name" placeholder="Timeline Name" />
-              <input type="text" id="timeline-description" placeholder="Timeline Description" />
-              <button type="submit" className="btn login-button" onClick={this.saveTimeline}>Update Timeline</button>
+              <input type="text" id="timeline-name" placeholder="Timeline Name" onKeyDown={this.saveTimeline} />
+              <input type="text" id="timeline-description" placeholder="Timeline Description" onKeyDown={this.saveTimeline} />
             </div>
-            <div>
+            <div className="title-heading-container">
               <h2 className="center title-banner timeline-title-description">{this.state.titleHeader}</h2>
               <h4 className="center description-banner timeline-title-description">{this.state.descriptionHeader}</h4>
             </div>
