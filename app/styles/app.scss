@@ -66,11 +66,21 @@ img {
 }
 
 //other styling
-.thumbnail {
+.thumbnails {
   height: 80px;
   width: 80px;
   display: inline-block;
   margin: 30px;
+  border: 1px solid #ddd;
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.active {
+  outline: 3px solid #43BFF6;
 }
 
 //timeline list view
@@ -143,6 +153,10 @@ li {
   width: 4px;
   height: 100%;
   background-color: #85BD9C;
+}
+
+.update-timeline-container {
+  margin-bottom: 20px;
 }
 
 #timeline-name {

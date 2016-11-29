@@ -112,6 +112,15 @@ var TimelineEventComponent = React.createClass({
 });
 
 var MomentThumbnailComponent = React.createClass({
+  getInitialState: function(){
+    return {
+      selected: ''
+    }
+  },
+  isActive: function(event){
+    // amazing help here from http://stackoverflow.com/questions/33262493/how-to-add-a-class-with-react-js
+    return ((event===this.state.selected) ?'default':'active');
+  },
   createEvent: function(timelineId){
     var event = new models.Event();
     console.log('creating event here', timelineId);
@@ -130,12 +139,15 @@ var MomentThumbnailComponent = React.createClass({
       self.props.updateEventCollection(self.props.eventCollection);
     });
 
+    this.setState({selected: event});
+    this.isActive(event);
+
   },
   render: function(){
     var self = this;
     return(
-      <div className="thumbnail" onClick={function(){self.createEvent(self.props.timelineId)}}>
-        <img src={this.props.moment.get('thumbnail_url')} />
+      <div className="thumbnails" onClick={function(){self.createEvent(self.props.timelineId)}}>
+        <img src={this.props.moment.get('thumbnail_url')} className={this.isActive('')} />
       </div>
     )
   }
@@ -152,7 +164,7 @@ var ScrapbookThumbnailComponent = React.createClass({
       cover = this.props.scrapbook.get('cover');
     }
     return(
-      <div className="thumbnail" onClick={this.viewMoments}>
+      <div className="thumbnails" onClick={this.viewMoments}>
         <img src={cover}/>
         <p>{this.props.scrapbook.get('title')}</p>
       </div>
