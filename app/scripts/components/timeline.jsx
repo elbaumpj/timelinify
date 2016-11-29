@@ -66,7 +66,7 @@ var TimelineEvent = React.createClass({
         var year = response.data.Events[randomEvent].year;
         self.props.eventItem.timelineId = self.props.timelineId;
         self.props.eventItem.set({
-          description: year + ': ' + response.data.Events[randomEvent].text
+          historical_data: year + ': ' + response.data.Events[randomEvent].text
         });
         self.props.eventItem.save();
         self.props.updateEventCollection(self.props.eventCollection);
@@ -78,8 +78,9 @@ var TimelineEvent = React.createClass({
     return(
       <li className="timeline-event well">
         <img src={this.props.image} />
-        <br />
         <input className="event-description" type="text" placeholder={this.props.eventItem.get('description')} onChange={this.setDescription}></input>
+        <br />
+        <img className="history-icon" src="../../images/history_icon.png"><p className="event-description">{this.props.eventItem.get('historical_data')}</p></img>
         <br />
         <input className="event-date" type="date" onChange={this.setEventDate} value={this.props.eventItem.get('date')} />
         <br />
@@ -129,7 +130,8 @@ var MomentThumbnailComponent = React.createClass({
       title: "test",
       description: "",
       date: moment(this.props.moment.get('given_date'))._d,
-      moment_id: this.props.moment.get('id')
+      moment_id: this.props.moment.get('id'),
+      historical_data: ""
     })
 
     var self = this;
@@ -227,7 +229,7 @@ var ModalComponent = React.createClass({
     }
       return (
         <div>
-          <i className="add-button fa fa-plus-circle" aria-hidden="true" onClick={this.open}></i>
+          <i className="add-button fa fa-plus-circle" id="add-button" aria-hidden="true" onClick={this.open}></i>
 
           <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>

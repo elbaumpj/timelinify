@@ -87,7 +87,7 @@ var TimelineListViewContainer = React.createClass({
   render: function(){
     return(
       <div className="timeline-list-heading">
-        <h2 className="timeline-title-description center">View and Create Your Timelines</h2>
+        <h2 className="timeline-title-description center">View and Create Timelines</h2>
         <span>
           <input className="btn login-button center-button create-timeline-button" type="submit" value="Create a New Timeline" onClick={this.createTimeline}/>
           </span>

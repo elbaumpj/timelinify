@@ -139,7 +139,7 @@ li {
 
 .timeline-events-container>li:nth-child(odd){
 	position: relative;
-	background: #F5F5F5;
+	background: #FFFFFF;
 }
 
 .title-banner{
@@ -152,7 +152,7 @@ li {
   top: 0;
   width: 4px;
   height: 100%;
-  background-color: #85BD9C;
+  background-color: #abadac;
 }
 
 .update-timeline-container {
@@ -221,8 +221,11 @@ li {
   .timeline-line{
     margin-left: -48%;
   }
-  .add-button{
+  #add-button{
+    position: fixed;
     margin-bottom: 30px;
+    margin-left: 0px;
+    font-size: 35px;
   }
 }
 
@@ -262,6 +265,10 @@ li {
     font-size: 20px;
     margin-left: 50%
   }
+  .add-button{
+    margin-bottom: 30px;
+    margin-left: 0px;
+  }
 }
 
 /* for timeline event carrot on left side */
@@ -287,7 +294,7 @@ li {
 
 .timeline-events-container>li:nth-child(even){
 	position: relative;
-	background: #F5F5F5;
+	background: #FFFFFF;
   width: 47%;
   float: left;
   margin-top: 20px;
@@ -319,8 +326,9 @@ li {
   font-style: italic;
   margin-top: 10px;
   border: none;
-  background-color: #F5F5F5;
+  background-color: #FFFFFF;
   width: 90%;
+  display: inline-block;
 }
 
 .event-description:focus {
@@ -329,25 +337,33 @@ li {
 }
 
 .event-date {
-  background-color: #F5F5F5;
+  background-color: #FFFFFF;
   border: none;
   box-shadow: none;
 }
 
+.history-icon{
+  margin-right: 5px;
+  margin-bottom: 25px;
+  height: 25px;
+  width: 25px;
+}
 //nav styling
 .title-header{
   color: #5A5C5B;
 }
 .nav-spans{
-  float: none;
+  float: right;
   color: #76BE9D;
   font-family: "proxima-nova", sans-serif;
   font-size: 14px;
   font-weight: bold;
+  margin-right: 5px;
+  margin-left: 15px;
 }
 
 .nav-spans-container {
-  margin-left: 16px;
+  margin-right: 16px;
 }
 
 h3{
@@ -356,14 +372,22 @@ h3{
   }
 }
 
+.navbar-default {
+  background-color: inherit;
+  margin: 10px;
+}
 //buttons
 .add-button{
   margin-top: 50px;
-  margin-left: 50%;
-  color: #85BD9C;
-  font-size: 35px;
+  margin-left: 633px;
+  color: #4eab79;
+  font-size: 50px;
   position: fixed;
   z-index: 9;
+  background: white;
+  border-radius: 27px;
+  height: 40px;
+  line-height: 41px;
 }
 
 .login-button {
@@ -387,31 +411,4 @@ h3{
 .delete-button:hover{
   color: white;
   background-color: #ef6666;
-}
-
-//timeline animations, credit to https://codyhouse.co/gem/vertical-timeline/
-
-.cssanimations .timeline-event.is-hidden {
-  visibility: hidden;
-}
-
-.cssanimations .timeline-event.bounce-in {
-  visibility: visible;
-  animation: cd-bounce-1 0.6s;
-}
-
-@keyframes cd-bounce-1 {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-
-  60% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-
-  100% {
-    transform: scale(1);
-  }
 }

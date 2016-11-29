@@ -11,13 +11,15 @@ var NavTemplate = React.createClass({
   },
   render: function(){
     return(
-      <nav className="navbar navbar-default">
-        <h3 className="title-header"> <img src='../../images/timeline_icon.png' /> Timelinify</h3>
+      <div>
         <div className="nav-spans-container">
-          <span className="nav-spans" onClick={this.navToLogin}>Login</span>&nbsp; &nbsp;
-          <span className="nav-spans" onClick={this.navToTimelines}> Your Timelines</span>
+          <span className="nav-spans" onClick={this.navToLogin}>Logout</span>&nbsp; &nbsp;
+          <span className="nav-spans" onClick={this.navToTimelines}>Timelines</span>
         </div>
-      </nav>
+        <nav className="navbar navbar-default">
+          <h3 className="title-header"> <img src='../../images/timeline_icon.png' /> Timelinify</h3>
+        </nav>
+      </div>
     )
   }
 });
