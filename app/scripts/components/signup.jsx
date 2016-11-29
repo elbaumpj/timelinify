@@ -12,7 +12,7 @@ var SignUpComponent = React.createClass({
     var router = this.props.router;
     var user = new User();
 
-    user.login(email, password, {
+    user.signup(email, password, {
       success: function(user) {
         console.log(user);
         router.navigate('timelines/', {trigger: true});

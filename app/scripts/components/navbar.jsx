@@ -1,5 +1,6 @@
 var React = require('react');
 var Backbone = require('backbone');
+var env = require('../config/env');
 //Nav components
 
 var NavTemplate = React.createClass({
@@ -17,7 +18,7 @@ var NavTemplate = React.createClass({
           <span className="nav-spans" onClick={this.navToTimelines}>Timelines</span>
         </div>
         <nav className="navbar navbar-default">
-          <h3 className="title-header"> <img src='../../images/timeline_icon.png' /> Timelinify</h3>
+          <h3 className="title-header"> <img src={env.basePath+'images/timeline_icon.png'} /> Timelinify</h3>
         </nav>
       </div>
     )

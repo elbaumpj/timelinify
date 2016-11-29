@@ -1,5 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
+var env = require('../config/env');
+
 
 //local imports
 var User = require('../models/user').User;
@@ -48,7 +50,7 @@ var BannerComponent = React.createClass({
   render: function(){
     return(
       <div className="banner">
-        <h2> <img src='../../images/timeline_icon.png' />Timelinify</h2>
+        <h2> <img src={env.basePath+'images/timeline_icon.png'} />Timelinify</h2>
       </div>
     )
   }

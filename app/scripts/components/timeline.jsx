@@ -8,7 +8,7 @@ var $ = require('jquery');
 var moment = require('moment');
 var _ = require("underscore")
 
-var env = require("../config/env")
+var env = require("../config/env");
 //local imports
 var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
 var MomentCollection = require('../models/scrapbook').MomentCollection;
@@ -83,7 +83,7 @@ var TimelineEvent = React.createClass({
         <img src={this.props.image} />
         <input className="event-description" type="text" placeholder={this.props.eventItem.get('description')} onChange={this.setDescription}></input>
         <br />
-        <img className="history-icon" src="../../images/history_icon.png"><p className="event-description">{this.props.eventItem.get('historical_data')}</p></img>
+        <img className="history-icon" src={env.basePath+'images/history_icon.png'}><p className="event-description">{this.props.eventItem.get('historical_data')}</p></img>
         <br />
         <input className="event-date" type="date" onChange={this.setEventDate} value={this.props.eventItem.get('date')} />
         <br />

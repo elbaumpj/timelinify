@@ -52,7 +52,7 @@ var AppRouter = Backbone.Router.extend({
         }
 
         let isArkiverUrl = (/arkiver/).test(options.url)
-        
+
         //to get around prefilter for 3rd party
         if(!isArkiverUrl) {
           options.url == options.url;
@@ -63,9 +63,10 @@ var AppRouter = Backbone.Router.extend({
           options.url = options.url + "?user_email=" + authData.user_email + "&user_token=" + authData.user_token;
         }
       });
-    } else if(routeMethod.name != 'index') {
+    } else if(routeMethod.name != 'index' || routeMethod.name != 'signup') {
+      console.log("FINAL ELSE HIT");
       this.navigate('', {trigger: true});
-      return false;
+      // return false;
     }
 
     routeMethod.apply(this, args);
