@@ -7,6 +7,8 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var moment = require('moment');
 var _ = require("underscore")
+
+var env = require("../config/env")
 //local imports
 var ScrapbookCollection = require('../models/scrapbook').ScrapbookCollection;
 var MomentCollection = require('../models/scrapbook').MomentCollection;
@@ -54,7 +56,8 @@ var TimelineEvent = React.createClass({
     var self = this;
 
     $.ajax({
-      url:'http://history.muffinlabs.com/date/' + month + '/' + day,
+
+      url:env.protocol+'history.muffinlabs.com/date/' + month + '/' + day,
       jsonp: 'callback',
       dataType: 'jsonp',
       data: {
