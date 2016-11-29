@@ -1,5 +1,5 @@
 ## The Iron Yard FEE Final Project
-### Timlinify - Peter Elbaum
+### Timelinify - Peter Elbaum
 
 #### Technologies used:
 

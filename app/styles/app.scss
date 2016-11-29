@@ -17,7 +17,9 @@ img {
   max-width: 100%;
 }
 
-
+a {
+  color: #4eab79;
+}
 //general styling
 #app{
   background-color: #F9FBFA;
@@ -30,6 +32,7 @@ img {
   font-family: "proxima-nova", sans-serif;;
   h2{
     color: #5A5C5B;
+    margin-left: 44%;
   }
   img{
     height: 50px;
@@ -45,6 +48,14 @@ img {
 }
 
 //login styling
+
+#login {
+  margin-left: 125px;
+    margin-top: 20px;
+    .login-button {
+      margin-top: 10px;
+    }
+}
 
 .log-in-container, .sign-in-container {
    margin-top: 20px;
@@ -62,9 +73,12 @@ img {
 .time-quote{
   color: #7D7772;
   font-style: italic;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
+.signup-link {
+  margin-top: 10px;
+}
 //other styling
 .thumbnails {
   height: 80px;
@@ -110,7 +124,7 @@ img {
 }
 
 .create-timeline-button{
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 //timeline styling
@@ -268,6 +282,9 @@ li {
   .add-button{
     margin-bottom: 30px;
     margin-left: 0px;
+  }
+  .time-quote {
+    margin-left: 30%;
   }
 }
 

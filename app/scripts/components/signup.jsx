@@ -1,4 +1,6 @@
 var React = require('react');
+var $ = require('jquery');
+var User = require('../models/user').User;
 
 var SignUpComponent = React.createClass({
   handleSubmit: function(e){
@@ -13,7 +15,7 @@ var SignUpComponent = React.createClass({
     user.login(email, password, {
       success: function(user) {
         console.log(user);
-        router.navigate('timeline/', {trigger: true});
+        router.navigate('timelines/', {trigger: true});
       },
       error: function(user, error){
         console.log(user, error);
@@ -23,11 +25,11 @@ var SignUpComponent = React.createClass({
   render: function(){
     return(
       <div className="sign-in-container">
-        <form id="signin" onSubmit={this.handleSubmit}>
-          <div className="instructions">Sign Up!</div>
-          <input className="form-control" name="email" id="email" type="email" placeholder="Email" />
-          <input className="form-control" name="password" id="password" type="password" placeholder="Password" />
-          <input className="btn login-button" type="submit" value="Sign Up" />
+        <form id="login" className="col-xs-12 col-md-6" onSubmit={this.handleSubmit}>
+          <div className="instructions">Sign up for an account</div>
+          <input className="form-control login-field" name="email" id="email" type="email" placeholder="Email" />
+          <input className="form-control login-field" name="password" id="password" type="password" placeholder="Password" />
+          <input className="btn login-button" type="submit" value="Log In" />
       </form>
       </div>
     )

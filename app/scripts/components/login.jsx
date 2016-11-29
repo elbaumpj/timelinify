@@ -28,12 +28,14 @@ var SignInComponent = React.createClass({
     return(
       <div className="log-in-container">
         <form id="login" className="col-xs-12 col-md-6" onSubmit={this.handleSubmit}>
-          <div className="instructions">Login to your account</div>
+          <div className="instructions">Log in to your account</div>
           <input className="form-control login-field" name="email" id="email" type="email" placeholder="Email" />
           <input className="form-control login-field" name="password" id="password" type="password" placeholder="Password" />
           <input className="btn login-button" type="submit" value="Log In" />
+          <br />
+          <p className="signup-link"><a href="#signup/">Sign up</a> for an account!</p>
       </form>
-      <div className="col-xs-12 col-md-6 time-quote">
+      <div className="col-xs-12 col-md-4 time-quote">
         <p>It takes a long time to become young.</p>
         <p>-Pablo Picasso</p>
       </div>
