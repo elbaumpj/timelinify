@@ -36,7 +36,7 @@ var EventCollection = Backbone.Collection.extend({
 var HistoricalData = Backbone.Model.extend({
   // urlRoot: 'http://history.muffinlabs.com/date'
   url: function(){
-    return 'http://peters-proxy.herokuapp.com/history?month=' + this.get('month') + '&day=' + this.get('day');
+    return 'https://peters-proxy.herokuapp.com/history?month=' + this.get('month') + '&day=' + this.get('day');
   },
   parse: function(data){
     return _.sample(data.data.Events);

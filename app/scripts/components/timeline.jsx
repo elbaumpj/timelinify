@@ -55,26 +55,42 @@ var TimelineEvent = React.createClass({
 
     var self = this;
 
-    $.ajax({
+    // $.ajax({
+    //
+    //   url:env.protocol+'history.muffinlabs.com/date/' + month + '/' + day,
+    //   jsonp: 'callback',
+    //   dataType: 'jsonp',
+    //   data: {
+    //     format: 'json'
+    //   },
+    //   success: function(response){
+    //     var events = response.data.Events.length
+    //     var randomEvent = Math.floor(Math.random() * events);
+    //     var year = response.data.Events[randomEvent].year;
+    //     self.props.eventItem.timelineId = self.props.timelineId;
+    //     self.props.eventItem.set({
+    //       historical_data: year + ': ' + response.data.Events[randomEvent].text
+    //     });
+    //     self.props.eventItem.save();
+    //     self.props.updateEventCollection(self.props.eventCollection);
+    //   }
+    // })
 
-      url:env.protocol+'history.muffinlabs.com/date/' + month + '/' + day,
-      jsonp: 'callback',
-      dataType: 'jsonp',
-      data: {
-        format: 'json'
-      },
-      success: function(response){
-        var events = response.data.Events.length
-        var randomEvent = Math.floor(Math.random() * events);
-        var year = response.data.Events[randomEvent].year;
-        self.props.eventItem.timelineId = self.props.timelineId;
-        self.props.eventItem.set({
-          historical_data: year + ': ' + response.data.Events[randomEvent].text
-        });
-        self.props.eventItem.save();
-        self.props.updateEventCollection(self.props.eventCollection);
-      }
-    })
+    var historicalData = new models.HistoricalData();
+     historicalData.set({
+       month: month,
+       day: day
+     })
+
+     historicalData.fetch().then(function(){
+       console.log(historicalData.get('text'));
+       self.props.eventItem.set({
+       historical_data: historicalData.get('text')
+     });
+       self.props.eventItem.timelineId = self.props.timelineId;
+       self.props.eventItem.save();
+       self.props.updateEventCollection(self.props.eventCollection);
+     });
   },
   render: function(){
     //need to set value on date input to format YYYY-MM-DD and need an onChange to set event's date to new date
